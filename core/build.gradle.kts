@@ -1,6 +1,6 @@
 import java.nio.file.Paths
 
-apply(from = "https://raw.githubusercontent.com/arrow-kt/arrow/main/arrow-libs/gradle/publication.gradle")
+//apply(from = "https://raw.githubusercontent.com/arrow-kt/arrow/main/arrow-libs/gradle/publication.gradle")
 
 dependencies {
   // Needed for Uri MatchNamedGroupCollection, ties us to JDK8
