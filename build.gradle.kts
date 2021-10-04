@@ -5,6 +5,7 @@ plugins {
   kotlin("jvm") version Version.kotlin apply false
   id(Plugins.kotlinSerialization) version Version.kotlin apply false
   id(Plugins.ktlint) version Version.ktlint apply true
+  `maven-publish`
 }
 
 allprojects {
