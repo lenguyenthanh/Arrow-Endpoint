@@ -165,8 +165,6 @@ public object ArrowEndpoint {
     return EndpointOutput.StatusMapping(statusCode, output) { a: Any? -> a in set }
   }
 
-
-
   /** Create a fallback mapping to be used in [oneOf] output descriptions */
   public fun <A> statusDefaultMapping(output: EndpointOutput<A>): EndpointOutput.StatusMapping<A> =
     EndpointOutput.StatusMapping(null, output) { true }

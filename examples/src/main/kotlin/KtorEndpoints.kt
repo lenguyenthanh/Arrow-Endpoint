@@ -10,7 +10,6 @@ import arrow.endpoint.JsonCodec
 import arrow.endpoint.Schema
 import arrow.endpoint.ArrowEndpoint.fixedPath
 import arrow.endpoint.ArrowEndpoint.stringBody
-import arrow.endpoint.docs.openapi.toOpenAPI
 import arrow.endpoint.input
 import arrow.endpoint.ktor.server.install
 import arrow.endpoint.output
@@ -68,11 +67,11 @@ public val pong: Endpoint<Unit, Unit, String> = Endpoint
   .input(fixedPath("ping"))
   .output(stringBody())
 
-//private val docs = listOf(pong)
+// private val docs = listOf(pong)
 //  .toOpenAPI("Example Server", "0.0.1")
 //  .toJson()
 
-//public val openApiServerEndpoint: ServerEndpoint<Unit, Unit, String> =
+// public val openApiServerEndpoint: ServerEndpoint<Unit, Unit, String> =
 //  Endpoint
 //    .get("openapi")
 //    .output(stringBody())
