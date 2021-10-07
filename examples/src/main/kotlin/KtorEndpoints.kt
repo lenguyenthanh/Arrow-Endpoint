@@ -68,7 +68,7 @@ public val pong: Endpoint<Unit, Unit, String> = Endpoint
   .input(fixedPath("ping"))
   .output(stringBody())
 
-private val docs = listOf(helloWorld, pong)
+private val docs = listOf(pong)
   .toOpenAPI("Example Server", "0.0.1")
   .toJson()
 

@@ -403,6 +403,7 @@ public data class Response(
 /** Each Media Type Object provides schema and examples for the media type identified by its key. */
 @Serializable
 public data class MediaType(
+  @Serializable(with = ReferencedSerializer::class)
   public val schema: Referenced<Schema>? = null,
   /** The schema defining the content of the request, response, or parameter.*/
   public val example: ExampleValue? = null,
