@@ -5,11 +5,8 @@ import io.kotest.matchers.shouldBe
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
-import kotlinx.serialization.modules.SerializersModule
-
 
 class ResponseSerializerTest : StringSpec({
-
 
   val json: Json = Json {
 //    encodeDefaults = false
@@ -41,8 +38,7 @@ class ResponseSerializerTest : StringSpec({
 
   "Referenced.Other" {
     val schema = Referenced.Other(
-      Schema(
-      )
+      Schema()
     ) as Referenced<Schema>
     val str = json.encodeToString(schema)
     println(str)
@@ -67,5 +63,4 @@ class ResponseSerializerTest : StringSpec({
 //    val decodedSchema = json.decodeFromString<Referenced<Schema>>(str)
 //    decodedSchema shouldBe schema
 //  }
-
 })
