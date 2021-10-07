@@ -68,15 +68,15 @@ public val pong: Endpoint<Unit, Unit, String> = Endpoint
   .input(fixedPath("ping"))
   .output(stringBody())
 
-private val docs = listOf(pong)
-  .toOpenAPI("Example Server", "0.0.1")
-  .toJson()
+//private val docs = listOf(pong)
+//  .toOpenAPI("Example Server", "0.0.1")
+//  .toJson()
 
-public val openApiServerEndpoint: ServerEndpoint<Unit, Unit, String> =
-  Endpoint
-    .get("openapi")
-    .output(stringBody())
-    .logic { docs.right() }
+//public val openApiServerEndpoint: ServerEndpoint<Unit, Unit, String> =
+//  Endpoint
+//    .get("openapi")
+//    .output(stringBody())
+//    .logic { docs.right() }
 
 public fun Application.endpointModule(): Unit = ArrowEndpoint {
   install(ServerEndpoint(pong) { Either.Right("Pong") })
@@ -89,5 +89,5 @@ public fun Application.endpointModule(): Unit = ArrowEndpoint {
     }
   )
 
-  install(openApiServerEndpoint)
+//  install(openApiServerEndpoint)
 }

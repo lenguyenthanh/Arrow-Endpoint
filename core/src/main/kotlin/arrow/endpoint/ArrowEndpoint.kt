@@ -152,6 +152,10 @@ public object ArrowEndpoint {
   public inline fun <reified A> statusMapping(statusCode: StatusCode, output: EndpointOutput<A>): EndpointOutput.StatusMapping<A> =
     EndpointOutput.StatusMapping(statusCode, output) { a: Any? -> a is A }
 
+  public fun <A> statusMapping(statusCode: StatusCode, output: EndpointOutput<A>, predicate: (Any?) -> Boolean): EndpointOutput.StatusMapping<A> {
+    return EndpointOutput.StatusMapping(statusCode, output, predicate)
+  }
+
   /**
    * Create a status mapping which uses [statusCode] and [output] if the outputted value matches the type of [A].
    * Should be used in [oneOf] output descriptions.
@@ -160,6 +164,8 @@ public object ArrowEndpoint {
     val set = setOf(firstExactValue) + rest.toSet()
     return EndpointOutput.StatusMapping(statusCode, output) { a: Any? -> a in set }
   }
+
+
 
   /** Create a fallback mapping to be used in [oneOf] output descriptions */
   public fun <A> statusDefaultMapping(output: EndpointOutput<A>): EndpointOutput.StatusMapping<A> =
