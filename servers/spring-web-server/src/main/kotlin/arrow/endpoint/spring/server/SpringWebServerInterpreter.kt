@@ -1,6 +1,7 @@
 package arrow.endpoint.spring.server
 
 import arrow.endpoint.EndpointIO
+import arrow.endpoint.EndpointInterceptor
 import arrow.endpoint.model.Address
 import arrow.endpoint.model.Body
 import arrow.endpoint.model.CodecFormat
@@ -30,20 +31,20 @@ import reactor.core.publisher.Mono
 import org.springframework.web.reactive.function.server.ServerRequest as SpringServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse as SpringServerResponse
 
-public fun <I, E, O> routerFunction(ses: ServerEndpoint<I, E, O>): RouterFunction<SpringServerResponse> =
-  routerFunction(listOf(ses))
+public fun <I, E, O> routerFunction(ses: ServerEndpoint<I, E, O>, interceptors: List<EndpointInterceptor> = emptyList()): RouterFunction<SpringServerResponse> =
+  routerFunction(listOf(ses), interceptors)
 
-public fun routerFunction(ses: List<ServerEndpoint<*, *, *>>): RouterFunction<SpringServerResponse> =
+public fun routerFunction(ses: List<ServerEndpoint<*, *, *>>, interceptors: List<EndpointInterceptor> = emptyList()): RouterFunction<SpringServerResponse> =
   router {
-    ses.forEach { endpoint -> add(endpoint.toRouterFunction()) }
+    ses.forEach { endpoint -> add(endpoint.toRouterFunction(interceptors)) }
   }
 
-private fun <I, E, O> ServerEndpoint<I, E, O>.toRouterFunction(): RouterFunction<SpringServerResponse> =
+private fun <I, E, O> ServerEndpoint<I, E, O>.toRouterFunction(interceptors: List<EndpointInterceptor> = emptyList()): RouterFunction<SpringServerResponse> =
   RouterFunction { request: SpringServerRequest ->
     val interpreter = ServerInterpreter(
       request.toServerRequest(),
       SpringRequestBody(request),
-      emptyList()
+      interceptors
     )
     mono { interpreter.invoke(this@toRouterFunction) }
       .flatMap { serverResponse: ServerResponse ->
