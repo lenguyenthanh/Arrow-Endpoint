@@ -14,6 +14,7 @@ import arrow.endpoint.model.Method
 import arrow.endpoint.model.StatusCode
 import io.ktor.client.HttpClient
 import io.ktor.client.call.receive
+import io.ktor.client.features.*
 import io.ktor.client.request.HttpRequestBuilder
 import io.ktor.client.request.HttpRequestData
 import io.ktor.client.request.cookie
@@ -48,7 +49,11 @@ public suspend operator fun <I, E, O> HttpClient.invoke(
   input: I
 ): DecodeResult<Either<E, O>> {
   val request = endpoint.toRequestBuilder(baseUrl, input)
-  val response = HttpStatement(request, this).execute()
+  val response = try {
+    HttpStatement(request, this).execute()
+  } catch (ex: ClientRequestException) {
+    ex.response
+  }
   return endpoint.parseResponse(response)
 }
 
@@ -63,7 +68,10 @@ public suspend fun <I, E, O> HttpClient.execute(
   return Triple(request.build(), response, result)
 }
 
-public fun <I, E, O> Endpoint<I, E, O>.toRequestBuilder(baseUrl: String, input: I): HttpRequestBuilder =
+public fun <I, E, O> Endpoint<I, E, O>.toRequestBuilder(
+  baseUrl: String,
+  input: I
+): HttpRequestBuilder =
   HttpRequestBuilder().apply {
     val info = this@toRequestBuilder.input.requestInfo(input, baseUrl)
     method = info.method.toMethod()
@@ -158,8 +166,14 @@ private suspend fun EndpointOutput<*>.outputParams(
         is EndpointOutput.FixedStatusCode -> codec.decode(Unit)
         is EndpointOutput.StatusCode -> codec.decode(code)
         is EndpointOutput.OneOf<*, *> -> mappings.firstOrNull { it.statusCode == null || it.statusCode == code }
-          ?.let { mapping -> mapping.output.outputParams(response, headers, code).flatMap { p -> (codec as Mapping<Any?, Any?>).decode(p.asAny) } }
-          ?: DecodeResult.Failure.Error(response.status.description, IllegalArgumentException("Cannot find mapping for status code $code in outputs $this"))
+          ?.let { mapping ->
+            mapping.output.outputParams(response, headers, code)
+              .flatMap { p -> (codec as Mapping<Any?, Any?>).decode(p.asAny) }
+          }
+          ?: DecodeResult.Failure.Error(
+            response.status.description,
+            IllegalArgumentException("Cannot find mapping for status code $code in outputs $this")
+          )
 
         is EndpointOutput.MappedPair<*, *, *, *> ->
           output.outputParams(response, headers, code).flatMap { p ->
