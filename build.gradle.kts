@@ -8,6 +8,7 @@ plugins {
   alias(libs.plugins.kotest.multiplatform) apply false
   alias(libs.plugins.kotlinxSerialization) apply false
   alias(libs.plugins.arrowGradleConfig.nexus)
+  `maven-publish`
 }
 
 allprojects {
@@ -41,6 +42,7 @@ allprojects {
   version = "0.1.0-SNAPSHOT"
 
   repositories {
+    mavenLocal()
     mavenCentral()
   }
 }
