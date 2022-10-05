@@ -20,7 +20,6 @@ allprojects {
     mavenLocal()
     google()
     mavenCentral()
-    jcenter()
     maven(url = "https://dl.bintray.com/arrow-kt/arrow-kt/")
     maven(url = "https://oss.sonatype.org/content/repositories/snapshots/")
   }
