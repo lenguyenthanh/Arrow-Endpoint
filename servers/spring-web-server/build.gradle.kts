@@ -13,7 +13,7 @@ dependencies {
   implementation(Libs.nettyTransportNativeKqueue)
 
   testImplementation(project(Libs.core))
-  testImplementation(project(Libs.test))
+  // testImplementation(project(Libs.test))
   testImplementation(project(Libs.springClientWebFlux))
   testImplementation(Libs.undertow)
 }
