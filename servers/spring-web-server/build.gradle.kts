@@ -1,5 +1,7 @@
 //apply(from = "https://raw.githubusercontent.com/arrow-kt/arrow/main/arrow-libs/gradle/publication.gradle")
 
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
   `maven-publish`
 }
@@ -18,12 +20,12 @@ dependencies {
   testImplementation(Libs.undertow)
 }
 
-  tasks.withType<KotlinCompile> {
-    kotlinOptions {
-      jvmTarget = "17"
-      freeCompilerArgs = listOf("-Xjsr305=strict")
-    }
+tasks.withType<KotlinCompile> {
+  kotlinOptions {
+    jvmTarget = "17"
+    freeCompilerArgs = listOf("-Xjsr305=strict")
   }
+}
 
 publishing {
   publications {
