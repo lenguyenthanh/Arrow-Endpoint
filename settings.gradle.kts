@@ -1,5 +1,5 @@
 rootProject.name = "arrow-endpoint"
-include("core", "schema-reflect", "test")
+include("core", "schema-reflect")
 
 // clients
 include("clients", ":clients:ktor-client")
