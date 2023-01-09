@@ -18,6 +18,13 @@ dependencies {
   testImplementation(Libs.undertow)
 }
 
+  tasks.withType<KotlinCompile> {
+    kotlinOptions {
+      jvmTarget = "17"
+      freeCompilerArgs = listOf("-Xjsr305=strict")
+    }
+  }
+
 publishing {
   publications {
     create<MavenPublication>("maven") {
