@@ -14,7 +14,7 @@ dependencies {
 
   testImplementation(project(Libs.core))
   // testImplementation(project(Libs.test))
-  testImplementation(project(Libs.springClientWebFlux))
+  // testImplementation(project(Libs.springClientWebFlux))
   testImplementation(Libs.undertow)
 }
 
